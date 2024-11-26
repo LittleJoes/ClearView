@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dyslexia-Friendly Reader with Interactive Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-Xx8Wfv+L+V1xTxO6N3zLa9kaXoY0DnNriypgnIK9Etk3kVQeO+QkhdigwnMS95ub5Jv1DlfucxA88gJHEc6ZAQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <h1>Dyslexia-Friendly Reader</h1>
+        <div class="header-controls">
+            <div class="view-selector">
+                <label for="viewSelect">View:</label>
+                <select id="viewSelect">
+                    <option value="reader">📖 Reader View</option>
+                    <option value="calendar">📅 Calendar View</option>
+                </select>
+            </div>
+            <div class="theme-selector">
+                <label for="themeSelect">Theme:</label>
+                <select id="themeSelect">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="pastel">Pastel</option>
+                    <option value="pastel2">Pastel 2</option>
+                    <option value="pastel3">Pastel 3</option>
+                </select>
+            </div>
+            <!-- Chatbot Button -->
+            <button id="chatbotBtn"><i class="fas fa-comments"></i> AI Assistant</button>
+        </div>
+    </header>
+
+    <!-- Reader View -->
+    <main id="readerView">
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <h2>Upload Document</h2>
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Drag & Drop your document here or click to select files</p>
+                <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt">
+            </div>
+        </section>
+
+        <section class="input-section">
+            <h2>Input Text</h2>
+            <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+            <button id="clearBtn"><i class="fas fa-times"></i> Clear Input</button>
+        </section>
+
+        <section class="controls">
+            <h2>Adjust Text Settings</h2>
+            <div class="slider-group">
+                <label for="fontSizeSlider">Font Size: <span id="fontSizeValue">18</span>px</label>
+                <input type="range" id="fontSizeSlider" min="12" max="48" value="18">
+            </div>
+            <div class="slider-group">
+                <label for="lineHeightSlider">Line Height: <span id="lineHeightValue">1.5</span></label>
+                <input type="range" id="lineHeightSlider" min="1" max="3" step="0.1" value="1.5">
+            </div>
+            <div class="slider-group">
+                <label for="wordSpacingSlider">Word Spacing: <span id="wordSpacingValue">0</span>px</label>
+                <input type="range" id="wordSpacingSlider" min="0" max="20" value="0">
+            </div>
+            <!-- New Font Selector -->
+            <div class="dropdown font-dropdown">
+                <label for="fontSelect">Font:</label>
+                <select id="fontSelect">
+                    <option value="OpenDyslexic">OpenDyslexic</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Georgia">Georgia</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Read Aloud Settings Section -->
+        <section class="read-aloud-settings">
+            <h2>Read Aloud Settings</h2>
+            <div class="slider-group">
+                <label for="speechRateSlider">Speech Rate: <span id="speechRateValue">1.0</span>x</label>
+                <input type="range" id="speechRateSlider" min="0.5" max="2" step="0.1" value="1.0">
+            </div>
+            <div class="slider-group">
+                <label for="speechPitchSlider">Pitch: <span id="speechPitchValue">1.0</span></label>
+                <input type="range" id="speechPitchSlider" min="0" max="2" step="0.1" value="1.0">
+            </div>
+            <div class="slider-group">
+                <label for="speechVolumeSlider">Volume: <span id="speechVolumeValue">1.0</span></label>
+                <input type="range" id="speechVolumeSlider" min="0" max="1" step="0.1" value="1.0">
+            </div>
+            <div class="dropdown">
+                <label for="voiceSelect">Voice:</label>
+                <select id="voiceSelect"></select>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="highlightWords" checked>
+                <label for="highlightWords">Highlight Words as They are Read</label>
+            </div>
+        </section>
+
+        <section class="language-section">
+            <h2>Translation Settings</h2>
+            <div class="language-selectors">
+                <div class="dropdown">
+                    <label for="sourceLanguage">Source Language:</label>
+                    <select id="sourceLanguage">
+                        <option value="">Auto-Detect</option>
+                        <option value="en">English</option>
+                        <!-- Add more languages if needed -->
+                    </select>
+                </div>
+                <div class="dropdown">
+                    <label for="targetLanguage">Target Language:</label>
+                    <select id="targetLanguage">
+                        <option value="es">Spanish</option>
+                        <option value="de">German</option>
+                        <option value="fr">French</option>
+                        <option value="ru">Russian</option>
+                        <option value="uk">Ukrainian</option>
+                        <option value="ar">Arabic</option>
+                        <option value="sv">Swedish</option>
+                        <option value="pt">Portuguese</option>
+                        <!-- Add more languages if needed -->
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="output-section">
+            <h2>Formatted Text</h2>
+            <div id="outputText"></div>
+            <div class="stats">
+                <p>Word Count: <span id="wordCount">0</span></p>
+                <p>Estimated Reading Time: <span id="readingTime">0</span> minutes</p>
+            </div>
+            <div class="actions">
+                <button id="readAloudBtn"><i class="fas fa-volume-up"></i> Read Aloud</button>
+                <button id="translateBtn"><i class="fas fa-language"></i> Translate</button>
+                <button id="copyTextBtn"><i class="fas fa-copy"></i> Copy Text</button>
+                <button id="saveSessionBtn"><i class="fas fa-save"></i> Save Session</button>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <h2>Input History</h2>
+            <ul id="historyList"></ul>
+        </section>
+    </main>
+
+    <!-- Calendar View -->
+    <main id="calendarView" style="display: none;">
+        <!-- Interactive Calendar Section -->
+        <section class="calendar-section">
+            <h2>Task Calendar</h2>
+            <div class="calendar-controls">
+                <button id="addTaskBtn"><i class="fas fa-plus"></i> Add Task</button>
+                <input type="text" id="searchTasks" placeholder="Search Tasks...">
+                <select id="filterTasks">
+                    <option value="all">All Tasks</option>
+                    <option value="today">Due Today</option>
+                    <option value="week">Due This Week</option>
+                </select>
+            </div>
+            <!-- Calendar Grid -->
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Calendar will be generated dynamically -->
+            </div>
+            <!-- Task List for Selected Date -->
+            <div class="task-list" id="taskList">
+                <!-- Tasks for selected date will be listed here -->
+            </div>
+        </section>
+
+        <!-- Modal for adding/editing tasks -->
+        <div id="taskModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalTitle">Add Task</h2>
+                <form id="taskForm">
+                    <label for="taskTitle">Title:</label>
+                    <input type="text" id="taskTitle" required>
+                    <label for="taskDescription">Description:</label>
+                    <textarea id="taskDescription"></textarea>
+                    <label for="taskDeadline">Deadline:</label>
+                    <input type="date" id="taskDeadline" required>
+                    <button type="submit" id="saveTaskBtn">Save Task</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbotModal" class="modal">
+        <div class="chatbot-content">
+            <div class="chatbot-header">
+                <h2>AI Assistant</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="chatbot-typing" id="chatbotTyping" style="display: none;">
+                <p><em>AI is typing...</em></p>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Type your message...">
+                <button id="sendChatbotMsg"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Dyslexia-Friendly Reader</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="config.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
